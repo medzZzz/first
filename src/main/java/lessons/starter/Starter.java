@@ -1,10 +1,13 @@
 package lessons.starter;
 
-import lessons.services.GreetingService;
-import lessons.services.GreetingServiceImpl;
 import lessons.LessonsConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import lessons.services.GreetingService;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+//import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 
 public class Starter {
 
@@ -12,9 +15,13 @@ public class Starter {
 
     public static void main(String[] args) {
         logger.info("Starting configuration...");
+        BasicConfigurator.configure();
 
-        ApplicationContext context = new AnnotationConfigApplicationContext(LessonsConfiguration.class);
+        AbstractApplicationContext context = new AnnotationConfigApplicationContext(LessonsConfiguration.class);
         GreetingService greetingService = context.getBean(GreetingService.class);
         logger.info(greetingService.sayGreeting());  // "Greeting, user!"
+        System.out.println(greetingService.sayGreeting());
+        context.registerShutdownHook();
+        //logger.info(withDependency.printText()); // "Some text!"
     }
 }
